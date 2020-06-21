@@ -1,0 +1,127 @@
+---
+title: "ASSIGNMENT 4"
+author: "Jessica Black"
+date: '2020-06-21'
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+bibliography: bibliography.bib
+---
+
+install.packages('rmarkdown')
+# Markdown Basics
+
+## Favorite Foods
+##  Under the ## Favorite Foods section, add an ordered list of your top three favorite foods
+
+- Tacos al Pastor
+- Cheese Pizza
+- Bacon Cheeseburger
+
+## Images
+## Under the ## Images section, insert the image 10-all-cases-log.png from completed/assignment04/plots/ directory with the caption All Cases (Log Plot)
+
+![All Cases (Log Plot)](/Users/jessicablack/Desktop/DSC/DSC520/R Projects/dsc520/completed/assignment04/plots/10-all-cases-log.png)
+
+## Add a Quote
+## Add one of your favorite quotes under the ## Add a Quote section.
+> Smile, youre here. 
+
+## Add an Equation
+
+$$
+    1+3
+$$
+<<inline-plot-knitr>>=
+2+3
+
+## Add a LaTeX formatted equation under the ## Add an Equation section.
+
+## Add a Footnote
+
+## Add any footnote under the ## Add a Footnote section.
+
+^[This is a footnote.]
+^[This is another footnote.]
+
+## Add Citations
+## Under the ## Add Citations section, create an unordered list with R for Everyone and Discovering Statistics Using R with the proper citations.
+
+- R for Everyone
+- Discovering Statistics Using R
+
+# Inline Code
+#  Under the # Inline Code section include a code chunk that loads the ggplot2 library and following dataframes from the previous exercise:
+ # heights_df
+ # california_df
+ # florida_df
+ # ny_df
+ # Use the include=FALSE option
+
+```{r inline-code-example, include=FALSE}
+library(ggplot2)
+library(knitr)
+heights_df <- read.csv("/Users/jessicablack/Desktop/DSC/DSC520/R Projects/dsc520/data/r4ds/heights.csv")
+load(heights_df)
+load(california_df)
+load(florida_df)
+load(ny_df)
+load(characters_df)
+```
+
+## NY Times COVID-19 Data
+# Under the ## NY Times COVID-19 Data section, include code used to generate the log scale plot from the previous exercise. This is the plot that corresponds to the image 10-all-cases-log.png from completed/assignment04/plots. Use the echo=FALSE option to only show the plot and not the code
+
+```{r covid_data, echo=FALSE}
+ggplot(data=florida_df, aes(x=date, group=1)) +
+    geom_line(aes(y = cases, color = "Florida")) +
+    geom_line(data=ny_df, aes(y = cases, color = "New York")) +
+    geom_line(data=california_df, aes(y = cases, color = "California")) +
+    scale_color_manual(
+        breaks = c("Florida", "New York", "California"),
+        values = c("darkred", "darkgreen", "steelblue")) +
+    labs(x = "", y = "Cases") + 
+    scale_y_log10()
+```
+
+## R4DS Height vs Earnings
+# Under the ## R4DS Height vs Earnings section include the code to generate the plot corresponding to the image completed/assignment03/plots/08-height-vs-earn-with-labels.png
+ Use the echo=FALSE option to only show the plot and not the code
+
+```{r height_vs_earning, echo=FALSE}
+ggplot(heights_df, aes(x=height, y=earn, col=sex)) + geom_point() +ggtitle('Height vs. Earnings') +
+    xlab('Height (Inches)') + ylab('Earnings (Dollars)')
+```
+# Tables
+
+## Knitr Table with Kable
+#  Using the knitr package and kable function, generate a table of the Lord of 
+# the Rings characters as given in the characters_df dataframe in the prior 
+# exercise. Give the table the caption One Ring to Rule Them All
+
+``` {r lotr_table, echo=FALSE}
+library(DT)
+name <- c("Aragon", "Bilbo", "Frodo", "Galadriel", "Sam", "Gandalf", "Legolas", "Sauron", "Gollum")
+race <- c("Men", "Hobbit", "Hobbit", "Elf", "Hobbit", "Maia", "Elf", "Maia", "Hobbit")
+in_fellowship <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE)
+ring_bearer <- c(FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE)
+age <- c(88, 129, 51, 7000, 36, 2019, 2931, 7052, 589)
+
+characters_df <- data.frame(name, race, in_fellowship, ring_bearer, age)
+data(characters_df, package=ggplot2)
+knitr::kable(characters_df, caption = "One Ring to Rule Them All")
+```
+
+## Pandoc Table
+#  Under the ## Pandoc Grid Table recreate the following table using Pandoc Markdown
+
+``` {r lotr_pandoc, echo=FALSE}
+library(tinytex)
+library(pander)
+pandoc.table(characters_df, style = 'grid')
+```
+# References
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
